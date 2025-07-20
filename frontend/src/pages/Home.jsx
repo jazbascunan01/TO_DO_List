@@ -1,53 +1,46 @@
-import { useState, useEffect } from 'react'
-import TaskList from '../components/TaskList'
-import TaskForm from '../components/TaskForm'
+import { useEffect, useState } from 'react';
+import { getTasks } from '../services/api';
+import TaskList from '../components/TaskList';
+import TaskForm from '../components/TaskForm';
 
 function Home() {
-  const [tasks, setTasks] = useState([])
-  const [filter, setFilter] = useState('all')
-  const [search, setSearch] = useState('') // <-- NUEVO
+  const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/tasks`)
-      .then(res => res.json())
-      .then(data => setTasks(data))
-  }, [])
+    getTasks().then(data => {
+      setTasks(data);
+      setLoading(false);
+    });
+  }, []);
 
-  // Filtrado por estado y por texto
-  const filteredTasks = tasks
-    .filter(task => {
-      if (filter === 'completed') return task.completed
-      if (filter === 'pending') return !task.completed
-      return true
-    })
-    .filter(task =>
-      task.title.toLowerCase().includes(search.toLowerCase())
-    )
+  const filtered = tasks
+    .filter(task => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed))
+    .filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="home">
-      <h1>App de Tareas</h1>
+      <h1>Gestor de Tareas</h1>
+      <TaskForm onTaskAdded={(task) => setTasks(prev => [...prev, task])} />
 
-      <TaskForm setTasks={setTasks} />
-
-      {/* Campo de búsqueda */}
       <input
         type="text"
-        placeholder="Buscar tareas..."
+        placeholder="Buscar..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* Botones de filtro */}
       <div className="filters">
         <button onClick={() => setFilter('all')}>Todas</button>
         <button onClick={() => setFilter('pending')}>Pendientes</button>
         <button onClick={() => setFilter('completed')}>Completadas</button>
       </div>
 
-      <TaskList tasks={filteredTasks} setTasks={setTasks} />
+      {loading ? <p>Cargando...</p> : <TaskList tasks={filtered} setTasks={setTasks} />}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

@@ -1,40 +1,25 @@
-function TaskItem({ task, setTasks }) {
-  const toggleComplete = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ completed: !task.completed }),
-    })
-      .then(res => res.json())
-      .then(updatedTask => {
-        setTasks(prev => prev.map(t => (t.id === task.id ? updatedTask : t)))
-      })
-      .catch(err => console.error('Error al marcar tarea:', err))
-  }
+import { deleteTask, toggleComplete } from '../services/api';
 
-  const handleDelete = () => {
-    fetch(`${import.meta.env.VITE_API_URL}/tasks/${task.id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        setTasks(prev => prev.filter(t => t.id !== task.id))
-      })
-      .catch(err => console.error('Error al eliminar tarea:', err))
-  }
+function TaskItem({ task, onToggle, onDelete }) {
+  const handleToggle = async () => {
+    const updated = await toggleComplete(task.id, !task.completed);
+    onToggle(updated);
+  };
+
+  const handleDelete = async () => {
+    await deleteTask(task.id);
+    onDelete(task.id);
+  };
 
   return (
     <div className={`task-item ${task.completed ? 'completed' : ''}`}>
       <label>
-        <input
-          type="checkbox"
-          checked={task.completed}
-          onChange={toggleComplete}
-        />
+        <input type="checkbox" checked={task.completed} onChange={handleToggle} />
         <span>{task.title}</span>
       </label>
       <button onClick={handleDelete}>Eliminar</button>
     </div>
-  )
+  );
 }
 
-export default TaskItem
+export default TaskItem;

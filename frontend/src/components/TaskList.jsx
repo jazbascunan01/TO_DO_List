@@ -1,28 +1,30 @@
-import { useEffect, useState } from 'react'
-import TaskItem from './TaskItem'
+import TaskItem from './TaskItem';
 
-function TaskList() {
-  const [tasks, setTasks] = useState([])
+function TaskList({ tasks, setTasks }) {
+  const handleToggle = (updatedTask) => {
+    setTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
+  };
 
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/tasks`)
-      .then(res => res.json())
-      .then(data => setTasks(data))
-      .catch(err => console.error('Error al obtener tareas:', err))
-  }, [])
+  const handleDelete = (id) => {
+    setTasks(prev => prev.filter(t => t.id !== id));
+  };
 
   return (
     <div className="task-list">
-      <h2>Lista de tareas</h2>
       {tasks.length === 0 ? (
         <p>No hay tareas.</p>
       ) : (
         tasks.map(task => (
-          <TaskItem key={task.id} task={task} setTasks={setTasks} />
+          <TaskItem
+            key={task.id}
+            task={task}
+            onToggle={handleToggle}
+            onDelete={handleDelete}
+          />
         ))
       )}
     </div>
-  )
+  );
 }
 
-export default TaskList
+export default TaskList;
