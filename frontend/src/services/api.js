@@ -26,3 +26,12 @@ export async function toggleComplete(id, completed) {
   });
   return res.json();
 }
+export async function updateTask(id, data) {
+  const res = await fetch(`${API_URL}/tasks/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+

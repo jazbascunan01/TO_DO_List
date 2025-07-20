@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { createTask } from '../services/api';
+import { useState, useEffect } from 'react';
 
-function TaskForm({ onTaskAdded }) {
-  const [title, setTitle] = useState('');
+function TaskForm({ onSubmit, initialTitle = '' }) {
+  const [title, setTitle] = useState(initialTitle);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    setTitle(initialTitle);
+  }, [initialTitle]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -11,8 +14,7 @@ function TaskForm({ onTaskAdded }) {
       setError('La tarea debe tener al menos 3 caracteres');
       return;
     }
-    const newTask = await createTask(title);
-    onTaskAdded(newTask);
+    await onSubmit(title);
     setTitle('');
     setError('');
   };
@@ -22,10 +24,10 @@ function TaskForm({ onTaskAdded }) {
       <input
         type="text"
         value={title}
-        placeholder="Nueva tarea"
+        placeholder="Escribí tu tarea"
         onChange={(e) => setTitle(e.target.value)}
       />
-      <button type="submit">Agregar</button>
+      <button type="submit">Guardar</button>
       {error && <p className="error">{error}</p>}
     </form>
   );

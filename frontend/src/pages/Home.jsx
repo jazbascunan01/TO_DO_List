@@ -1,44 +1,8 @@
-import { useEffect, useState } from 'react';
-import { getTasks } from '../services/api';
-import TaskList from '../components/TaskList';
-import TaskForm from '../components/TaskForm';
-
 function Home() {
-  const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState('all');
-  const [search, setSearch] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getTasks().then(data => {
-      setTasks(data);
-      setLoading(false);
-    });
-  }, []);
-
-  const filtered = tasks
-    .filter(task => filter === 'all' || (filter === 'completed' ? task.completed : !task.completed))
-    .filter(task => task.title.toLowerCase().includes(search.toLowerCase()));
-
   return (
     <div className="home">
-      <h1>Gestor de Tareas</h1>
-      <TaskForm onTaskAdded={(task) => setTasks(prev => [...prev, task])} />
-
-      <input
-        type="text"
-        placeholder="Buscar..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
-
-      <div className="filters">
-        <button onClick={() => setFilter('all')}>Todas</button>
-        <button onClick={() => setFilter('pending')}>Pendientes</button>
-        <button onClick={() => setFilter('completed')}>Completadas</button>
-      </div>
-
-      {loading ? <p>Cargando...</p> : <TaskList tasks={filtered} setTasks={setTasks} />}
+      <h1>Bienvenido/a</h1>
+      <p>Esta es una aplicación para gestionar tus tareas diarias de manera simple y eficiente.</p>
     </div>
   );
 }
