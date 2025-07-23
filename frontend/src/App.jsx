@@ -3,9 +3,11 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import TaskManager from './pages/TaskManager';
 import NewTask from './pages/NewTask';
-import NotFound from './pages/NotFound';
 import EditTask from './pages/EditTask';
-
+import Stats from './pages/Stats';
+import Settings from './pages/Settings';
+import Summary from './pages/Summary';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -15,11 +17,14 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/tasks" element={<TaskManager />} />
         <Route path="/new" element={<NewTask />} />
+        <Route path="/edit/:id" element={<EditTask />} />
+        <Route path="/stats" element={<Stats />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/summary" element={<Summary />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
 }
-<Route path="/edit/:id" element={<EditTask />} />
 
 export default App;

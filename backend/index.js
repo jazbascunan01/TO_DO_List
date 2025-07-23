@@ -13,9 +13,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Array temporal para almacenar tareas
-let tasks = [];
-
 // Rutas
 // GET todas las tareas
 app.get('/api/tasks', (req, res) => {
@@ -29,34 +26,35 @@ app.get('/api/tasks', (req, res) => {
 
 // POST crear tarea
 app.post('/api/tasks', (req, res) => {
-  const { title } = req.body
+  const { title, description } = req.body
   if (!title) return res.status(400).json({ error: 'Título requerido' })
 
-  const stmt = db.prepare('INSERT INTO tasks (title, completed) VALUES (?, ?)')
-  const info = stmt.run(title, 0)
-  const newTask = {
-    id: info.lastInsertRowid,
-    title,
-    completed: false,
-  }
+  const stmt = db.prepare('INSERT INTO tasks (title, description, completed) VALUES (?, ?, ?)')
+  const info = stmt.run(title, description || '', 0) // Usamos un string vacío si no hay descripción
+
+  // Devolvemos la tarea recién creada consultándola para obtener todos los campos
+  const newTask = db.prepare('SELECT * FROM tasks WHERE id = ?').get(info.lastInsertRowid)
+  
   res.status(201).json(newTask)
 })
 
 // PUT actualizar tarea
 app.put('/api/tasks/:id', (req, res) => {
   const { id } = req.params
-  const { title, completed } = req.body
+  const { title, description, completed } = req.body
 
   const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id)
   if (!task) return res.status(404).json({ error: 'Tarea no encontrada' })
 
   const updatedTitle = title ?? task.title
+  const updatedDescription = description ?? task.description
   const updatedCompleted = completed !== undefined ? Number(completed) : task.completed
 
-  db.prepare('UPDATE tasks SET title = ?, completed = ? WHERE id = ?')
-    .run(updatedTitle, updatedCompleted, id)
+  db.prepare('UPDATE tasks SET title = ?, description = ?, completed = ? WHERE id = ?')
+    .run(updatedTitle, updatedDescription, updatedCompleted, id)
 
-  res.json({ id: Number(id), title: updatedTitle, completed: Boolean(updatedCompleted) })
+  const updatedTask = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id)
+  res.json(updatedTask)
 })
 
 // DELETE eliminar
