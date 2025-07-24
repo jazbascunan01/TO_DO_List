@@ -7,6 +7,7 @@ import {
   putTask,
   deleteTaskById
 } from '../controllers/taskController';
+
 const router = Router();
 
 router.get('/', getAllTasks);
@@ -14,4 +15,4 @@ router.post('/', postTask);
 router.put('/:id', putTask);
 router.delete('/:id', deleteTaskById);
 
-export default router;
+export default router;  // <-- default export

@@ -1,41 +1,46 @@
 // backend/src/models/task.ts
 
-import { v4 as uuidv4 } from 'uuid';
+import { PrismaClient, TaskStatus } from '@prisma/client';
 
-export interface Task {
-  id: string;
-  title: string;
-  description: string;
-  completed: boolean;
-  createdAt: Date;
-}
+const prisma = new PrismaClient();
 
-let tasks: Task[] = [];
-
-export const getTasks = (): Task[] => tasks;
-
-export const createTask = (title: string, description: string): Task => {
-  const newTask: Task = {
-    id: uuidv4(),
-    title,
-    description,
-    completed: false,
-    createdAt: new Date()
-  };
-  tasks.push(newTask);
-  return newTask;
+export const getTasks = async () => {
+  return await prisma.task.findMany();
 };
 
-export const updateTask = (id: string, updates: Partial<Task>): Task | null => {
-  const index = tasks.findIndex(t => t.id === id);
-  if (index === -1) return null;
-  tasks[index] = { ...tasks[index], ...updates };
-  return tasks[index];
+export const createTask = async (
+  title: string,
+  description: string,
+  completed: TaskStatus
+) => {
+  return await prisma.task.create({
+    data: {
+      title,
+      description,
+      completed,
+    },
+  });
 };
 
-export const deleteTask = (id: string): boolean => {
-  const index = tasks.findIndex(t => t.id === id);
-  if (index === -1) return false;
-  tasks.splice(index, 1);
-  return true;
+
+export const updateTask = async (id: string, updates: Partial<{ title: string; description: string; completed: TaskStatus }>) => {
+  try {
+    return await prisma.task.update({
+      where: { id },
+      data: updates,
+    });
+  } catch (error) {
+    return null;
+  }
+};
+
+export const deleteTask = async (id: string) => {
+  try {
+    await prisma.task.delete({
+      where: { id },
+    });
+    return true;
+  } catch {
+    return false;
+  }
 };
