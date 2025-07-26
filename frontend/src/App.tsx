@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/NavBar.tsx";
+import Navbar from "./components/Navbar.tsx";
 import Home from "./pages/Home";
 import AddTask from "./pages/AddTask.tsx";
 import EditTask from "./pages/EditTask.tsx";
