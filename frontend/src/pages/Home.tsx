@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getTasks } from "../api";
 import type { Task, TaskStatus } from "../types/Task";
-import { Container, Row, Col, Badge, Card, Spinner } from "react-bootstrap";
+import { Container, Row, Col, Badge, Card, Spinner, Button } from "react-bootstrap";
 
 const Home = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTasks = async () => {
             try {
                 const data = await getTasks();
-                console.log("TAREAS CARGADAS:", data); // 🔍 Verifica esto en consola
+                console.log("TAREAS CARGADAS:", data);
                 setTasks(data);
             } catch (error) {
                 console.error("Error fetching tasks:", error);
@@ -23,13 +25,12 @@ const Home = () => {
         fetchTasks();
     }, []);
 
-
     const groupByStatus = (status: TaskStatus) =>
-        tasks.filter((task) =>
-            typeof task.completed === "string" &&
-            task.completed.toLowerCase() === status
+        tasks.filter(
+            (task) =>
+                typeof task.completed === "string" &&
+                task.completed.toLowerCase() === status
         );
-
 
     const statuses: TaskStatus[] = ["pending", "in_progress", "done"];
 
@@ -74,14 +75,21 @@ const Home = () => {
                                                     <Card.Body className="p-2">
                                                         <strong>{task.title}</strong>
                                                         <div className="text-muted small">{task.description}</div>
+                                                        <div className="mt-2 text-end">
+                                                            <Button
+                                                                variant="outline-primary"
+                                                                size="sm"
+                                                                onClick={() => navigate(`/edit/${task.id}`)}
+                                                            >
+                                                                Editar
+                                                            </Button>
+                                                        </div>
                                                     </Card.Body>
                                                 </Card>
                                             ))
                                         ) : (
                                             <div className="text-muted">No hay tareas</div>
-
                                         )}
-
                                     </Card.Body>
                                 </Card>
                             </Col>
@@ -91,7 +99,6 @@ const Home = () => {
             )}
         </Container>
     );
-
 };
 
 export default Home;
