@@ -112,7 +112,7 @@ VITE_API_URL=http://localhost:3000/api
 ## 🖼️ Capturas de Pantalla
 
 ### 📋 Vista general de la lista
-![Task List](https://raw.githubusercontent.com/jazbascunan01/TO_DO_List/main/screenshots/task-list.png)
+![Task List](https://github.com/jazbascunan01/TO_DO_List/blob/test/screenshoots/taskList.png)
 
 ### 📝 Formulario para nueva tarea
 ![Task Form](https://raw.githubusercontent.com/jazbascunan01/TO_DO_List/main/screenshots/task-form.png)
