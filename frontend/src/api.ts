@@ -16,11 +16,14 @@ export const createTask = async (task: Omit<Task, 'id' | 'createdAt'>): Promise<
   return res.json();
 };
 
-export const updateTask = async (task: Task): Promise<Task> => {
-  const res = await fetch(`${API_URL}/${task.id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(task)
+export const updateTask = async (
+  id: string,
+  updatedFields: Partial<Omit<Task, "id">>
+): Promise<Task> => {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id, ...updatedFields }),
   });
   return res.json();
 };

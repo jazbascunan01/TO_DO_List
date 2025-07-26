@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/NavBar.tsx";
 import Home from "./pages/Home";
 import AddTask from "./pages/AddTask.tsx";
+import EditTask from "./pages/EditTask.tsx";
 import Stats from "./pages/Stats.tsx";
 import Settings from "./pages/Settings.tsx";
 import { ThemeProvider } from "./context/ThemeContext.tsx";
@@ -16,6 +17,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/agregar" element={<AddTask />} />
             <Route path="/estadisticas" element={<Stats />} />
+            <Route path="/edit/:id" element={<EditTask />} />
             <Route path="/ajustes" element={<Settings />} />
           </Routes>
         </div>
