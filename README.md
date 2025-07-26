@@ -1,4 +1,3 @@
-\`\`\`markdown
 # 📝 TO-DO List App - Challenge Academia ForIT 2025
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/jazbascunan01/TO_DO_List?color=brightgreen&style=flat-square)
@@ -36,7 +35,7 @@ El foco principal es demostrar conocimientos básicos sobre:
 
 ## 📂 Estructura del Proyecto
 
-\`\`\`bash
+```bash
 TO_DO_List/
 ├── backend/              # API REST - Node.js + Express
 │   ├── server.js
@@ -52,7 +51,7 @@ TO_DO_List/
 │   └── vite.config.js
 ├── .env
 └── README.md
-\`\`\`
+```
 
 ---
 
@@ -71,42 +70,42 @@ TO_DO_List/
 
 ### 🔹 1. Clonar el repositorio
 
-\`\`\`bash
+```bash
 git clone https://github.com/jazbascunan01/TO_DO_List.git
 cd TO_DO_List
-\`\`\`
+```
 
 ---
 
 ### 🔹 2. Ejecutar el Backend
 
-\`\`\`bash
+```bash
 cd backend
 npm install
 npm run dev
-\`\`\`
+```
 
 > 📌 Asegurate de tener un archivo `.env` con la siguiente variable:
 
-\`\`\`env
+```env
 PORT=3000
-\`\`\`
+```
 
 ---
 
 ### 🔹 3. Ejecutar el Frontend
 
-\`\`\`bash
+```bash
 cd frontend
 npm install
 npm run dev
-\`\`\`
+```
 
 > 📌 También creá un archivo `.env` en `/frontend`:
 
-\`\`\`env
+```env
 VITE_API_URL=http://localhost:3000/api
-\`\`\`
+```
 
 ---
 
@@ -169,6 +168,3 @@ Desarrollado por **Jazmín Bascuñan**
 🔗 [Mi GitHub](https://github.com/jazbascunan01)
 
 ---
-
-> _“No te preocupes por fallar. Solo tienes que estar en lo correcto una vez.”_ – Drew Houston
-\`\`\`
