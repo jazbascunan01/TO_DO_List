@@ -116,7 +116,7 @@ VITE_API_URL=http://localhost:3000/api
 
 
 ### 📝 Formulario para nueva tarea
-![Task Form](https://raw.githubusercontent.com/jazbascunan01/TO_DO_List/main/screenshots/task-form.png)
+![Task Form](https://github.com/jazbascunan01/TO_DO_List/blob/test/screenshoots/addTask.png)
 
 ---
 
