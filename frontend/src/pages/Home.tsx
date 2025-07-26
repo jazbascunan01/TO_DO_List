@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getTasks } from "../api";
+import { getTasks, deleteTask } from "../api";  // <-- import deleteTask
 import type { Task, TaskStatus } from "../types/Task";
 import { Container, Row, Col, Badge, Card, Spinner, Button } from "react-bootstrap";
 
@@ -24,6 +24,19 @@ const Home = () => {
 
         fetchTasks();
     }, []);
+
+    const handleDelete = async (id: string) => {
+        if (!window.confirm("¿Estás seguro que querés eliminar esta tarea?")) return;
+
+        try {
+            await deleteTask(id);
+            // Actualizar estado local quitando la tarea eliminada
+            setTasks((prev) => prev.filter((task) => task.id !== id));
+        } catch (error) {
+            console.error("Error al eliminar tarea:", error);
+            alert("No se pudo eliminar la tarea.");
+        }
+    };
 
     const groupByStatus = (status: TaskStatus) =>
         tasks.filter(
@@ -79,9 +92,17 @@ const Home = () => {
                                                             <Button
                                                                 variant="outline-primary"
                                                                 size="sm"
+                                                                className="me-2"
                                                                 onClick={() => navigate(`/edit/${task.id}`)}
                                                             >
                                                                 Editar
+                                                            </Button>
+                                                            <Button
+                                                                variant="outline-danger"
+                                                                size="sm"
+                                                                onClick={() => handleDelete(task.id)}
+                                                            >
+                                                                Eliminar
                                                             </Button>
                                                         </div>
                                                     </Card.Body>
