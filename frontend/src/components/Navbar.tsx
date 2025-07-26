@@ -16,7 +16,7 @@ export default function Navbar() {
             <li className="nav-item"><Link className="nav-link" to="/">Inicio</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/agregar">Agregar</Link></li>
             <li className="nav-item"><Link className="nav-link" to="/estadisticas">Estadísticas</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="/configuracion">Configuración</Link></li>
+            <li className="nav-item"><Link className="nav-link" to="/ajustes">Ajustes</Link></li>
           </ul>
         </div>
       </div>
